@@ -37,19 +37,11 @@ router.get('/:id', async (req, res) => {
 
 // Endpoint untuk menambahkan invoice baru dan produk terkait
 router.post('/', async (req, res) => {
+  console.log('Request body:', req.body); // Tambahkan logging di sini
   const { date, customer_name, salesperson_name, notes, total_amount } =
     req.body;
 
-  // Log data yang diterima
-  console.log('Received data:', req.body);
-
   if (!date || !customer_name || !salesperson_name || !total_amount) {
-    console.error('Validation failed:', {
-      date,
-      customer_name,
-      salesperson_name,
-      total_amount,
-    });
     return res.status(400).send({ error: 'All fields are required' });
   }
 

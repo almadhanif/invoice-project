@@ -1,28 +1,30 @@
-// server/server.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const invoiceRoutes = require('./routes/invoices');
-const productRoutes = require('./routes/products');
-const pool = require('./config/db');
+const cors = require('cors');
+const pool = require('./config/db'); // Sesuaikan dengan konfigurasi database Anda
+const invoicesRouter = require('./routes/invoices'); // Sesuaikan dengan rute yang ada
 
 const app = express();
-const port = process.env.PORT || 5000;
 
+// Middleware CORS
+app.use(cors());
+
+// Middleware untuk parsing JSON
 app.use(express.json());
-app.use(bodyParser.json());
 
-app.use('/api/invoices', invoiceRoutes);
-app.use('/api/products', productRoutes);
+// Gunakan rute
+app.use('/api/invoices', invoicesRouter);
 
-// Check database connection
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Error connecting to the database', err.stack);
-  } else {
-    console.log('Connected to the database:', res.rows[0]);
-  }
+// Jalankan server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// // Check database connection
+// pool.query('SELECT NOW()', (err, res) => {
+//   if (err) {
+//     console.error('Error connecting to the database', err.stack);
+//   } else {
+//     console.log('Connected to the database:', res.rows[0]);
+//   }
+// });
